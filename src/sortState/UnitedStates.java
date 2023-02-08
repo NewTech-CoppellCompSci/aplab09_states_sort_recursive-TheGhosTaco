@@ -25,58 +25,146 @@ public class UnitedStates
 	}
 	
 	
-	
+
+
 	/*
 	 * Merge Sort
 	 * 
 	 * Use a merge sort to order the ArrayList
-	 * by the state's name
+	 * by the state's name using a bubble sort
 	 */
-	public void sortStates(int front, int back) {
+	public void sortStates(int front, int back) 
+	{
 		
-		
-		
-		
-		
-		
-		
-		
+		if(front < back)
+		{
+			int mid = (front + back) / 2;
+			sortStates(front, mid);
+			sortStates(mid + 1, back);
+
+			merge(front, mid, back);
+
+		}
 		
 	}
 	
 	
+
 	/*
 	 * Quick Sort
 	 * 
 	 * Use a selection sort to order the ArrayList
-	 * by the state's capital
+	 * by the state's capital using a bubble sort
 	 */
-	public void sortCapitals(int low, int high) {
-		
-		
-		
-		
-		
-		
-		
+	public void sortCapitals(int low, int high) 
+	{
+		if(low < high)
+		{
+			int pivot = partition(low, high);
+			sortCapitals(low, pivot - 1);
+			sortCapitals(pivot + 1, high);
+		}
 	}
-	
-	
-	/*
+
+/*
 	 * Insertion Sort
 	 * 
 	 * Use an insertion sort to order the ArrayList
-	 * by the state's population
+	 * by the state's population using a bubble sort
 	 */
-	public void sortPopulation() {
-		
-		
-		
-		
-		
-		
-		
+	public void sortPopulation() 
+	{
+		for(int i = 1; i < states.size(); i++)
+		{
+			State temp = states.get(i);
+			int j = i - 1;
+			
+			while(j >= 0 && states.get(j).getPopulation() > temp.getPopulation())
+			{
+				states.set(j + 1, states.get(j));
+				j--;
+			}
+			states.set(j + 1, temp);
+		}
 	}
+	
+
+
+	public void merge(int front, int mid, int back)
+	{
+		int n1 = mid - front + 1;
+		int n2 = back - mid;
+		
+		State[] left = new State[n1];
+		State[] right = new State[n2];
+		
+		for(int i = 0; i < n1; i++)
+		{
+			left[i] = states.get(front + i);
+		}
+		
+		for(int j = 0; j < n2; j++)
+		{
+			right[j] = states.get(mid + 1 + j);
+		}
+		
+		int i = 0;
+		int j = 0;
+		int k = front;
+		
+		while(i < n1 && j < n2)
+		{
+			if(left[i].getName().compareTo(right[j].getName()) <= 0)
+			{
+				states.set(k, left[i]);
+				i++;
+			}
+			else
+			{
+				states.set(k, right[j]);
+				j++;
+			}
+			k++;
+		}
+		
+		while(i < n1)
+		{
+			states.set(k, left[i]);
+			i++;
+			k++;
+		}
+		
+		while(j < n2)
+		{
+			states.set(k, right[j]);
+			j++;
+			k++;
+		}
+	}
+	public int partition(int low, int high)
+	{
+		String pivot = states.get(high).getCapital();
+		int i = low - 1;
+		
+		for(int j = low; j < high; j++)
+		{
+			if(states.get(j).getCapital().compareTo(pivot) <= 0)
+			{
+				i++;
+				swap(i, j);
+			}
+		}
+		swap(i + 1, high);
+		return i + 1;
+	}
+	public void swap(int i, int j)
+	{
+		State temp = states.get(i);
+		states.set(i, states.get(j));
+		states.set(j, temp);
+	}
+
+
 	
 	
 
